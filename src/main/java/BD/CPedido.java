@@ -165,16 +165,13 @@ public class CPedido {
         }
     }
 
-// DIEGO14.03.25:
-
 public void enviarPedido(JTable jTable3) {
     Database objetoConexion = new Database();
     
     try (Connection conexion = objetoConexion.establecerConexion()) {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         
-        // Now insert all rows from the table
-        String insertSQL = "INSERT INTO pedido (nombre, cantidad, unidad, total) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO prueba160225.pedido (nombre, cantidad, unidad, total) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             for (int i = 0; i < model.getRowCount(); i++) {
                 String nombre = model.getValueAt(i, 0).toString();
@@ -189,11 +186,10 @@ public void enviarPedido(JTable jTable3) {
 
                 ps.executeUpdate();
                 
-                // Get the generated key (ID) and store it in the table model
                 ResultSet generatedKeys = ps.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    model.setValueAt(id, i, 4); // Store ID in hidden column
+                    model.setValueAt(id, i, 4);
                 }
             }
         }
@@ -206,15 +202,14 @@ public void enviarPedido(JTable jTable3) {
         objetoConexion.cerrarConexion();
     }
 }
-// DIEGO14.03.25:
+
 public void guardarPedido(JTable jTable3) {
     Database objetoConexion = new Database();
     
     try (Connection conexion = objetoConexion.establecerConexion()) {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         
-        // Now insert all rows from the table
-        String insertSQL = "INSERT INTO pedido (nombre, cantidad, unidad, total) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO prueba160225.pedido (nombre, cantidad, unidad, total) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             for (int i = 0; i < model.getRowCount(); i++) {
                 String nombre = model.getValueAt(i, 0).toString();
@@ -229,11 +224,10 @@ public void guardarPedido(JTable jTable3) {
 
                 ps.executeUpdate();
                 
-                // Get the generated key (ID) and store it in the table model
                 ResultSet generatedKeys = ps.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
-                    model.setValueAt(id, i, 4); // Store ID in hidden column
+                    model.setValueAt(id, i, 4);
                 }
             }
         }
@@ -253,11 +247,9 @@ public void actualizarCantidadEnBD(String nombreProducto, int cantidad, int rowI
     try {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         
-        // Get the database ID from the hidden column
         Object idObj = model.getValueAt(rowIndex, 4);
         
         if (idObj == null) {
-            // This row hasn't been saved to the database yet
             System.out.println("No se puede actualizar: la fila aún no está guardada en la base de datos");
             return;
         }
@@ -265,8 +257,7 @@ public void actualizarCantidadEnBD(String nombreProducto, int cantidad, int rowI
         int id = Integer.parseInt(idObj.toString());
         Connection conn = objetoConexion.establecerConexion();
         
-        // First, get the current unit price
-        String selectSql = "SELECT unidad FROM pedido WHERE id = ?";
+        String selectSql = "SELECT unidad FROM prueba160225.pedido WHERE id = ?";
         PreparedStatement selectStmt = conn.prepareStatement(selectSql);
         selectStmt.setInt(1, id);
         ResultSet rs = selectStmt.executeQuery();
@@ -275,8 +266,7 @@ public void actualizarCantidadEnBD(String nombreProducto, int cantidad, int rowI
             double unidad = rs.getDouble("unidad");
             double nuevoTotal = cantidad * unidad;
             
-            // Update by ID to ensure only this specific row is updated
-            String updateSql = "UPDATE pedido SET cantidad = ?, total = ? WHERE id = ?";
+            String updateSql = "UPDATE prueba160225.pedido SET cantidad = ?, total = ? WHERE id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
             updateStmt.setInt(1, cantidad);
             updateStmt.setDouble(2, nuevoTotal);
@@ -284,7 +274,6 @@ public void actualizarCantidadEnBD(String nombreProducto, int cantidad, int rowI
             
             updateStmt.executeUpdate();
             
-            // Also update the total in the table model
             model.setValueAt(nuevoTotal, rowIndex, 3);
             
             updateStmt.close();
@@ -298,18 +287,16 @@ public void actualizarCantidadEnBD(String nombreProducto, int cantidad, int rowI
         objetoConexion.cerrarConexion();
     }
 }
-// DIEGO14.03.25:
+
 public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable table, boolean mostrarMensajes) {
     Database objetoConexion = new Database();
     
     try {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
-        // Get the database ID from the hidden column
         Object idObj = model.getValueAt(row, 4);
         
         if (idObj == null) {
-            // This row hasn't been saved to the database yet
             System.out.println("No se puede actualizar: la fila aún no está guardada en la base de datos");
             return;
         }
@@ -317,8 +304,7 @@ public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable 
         int id = Integer.parseInt(idObj.toString());
         Connection conn = objetoConexion.establecerConexion();
         
-        // First, get the current unit price
-        String selectSql = "SELECT unidad FROM pedido WHERE id = ?";
+        String selectSql = "SELECT unidad FROM prueba160225.pedido WHERE id = ?";
         PreparedStatement selectStmt = conn.prepareStatement(selectSql);
         selectStmt.setInt(1, id);
         ResultSet rs = selectStmt.executeQuery();
@@ -327,8 +313,7 @@ public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable 
             double unidad = rs.getDouble("unidad");
             double nuevoTotal = cantidad * unidad;
             
-            // Update by ID to ensure only this specific row is updated
-            String updateSql = "UPDATE pedido SET cantidad = ?, total = ? WHERE id = ?";
+            String updateSql = "UPDATE prueba160225.pedido SET cantidad = ?, total = ? WHERE id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
             updateStmt.setInt(1, cantidad);
             updateStmt.setDouble(2, nuevoTotal);
@@ -336,7 +321,6 @@ public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable 
             
             updateStmt.executeUpdate();
             
-            // Also update the total in the table model
             model.setValueAt(nuevoTotal, row, 3);
             
             updateStmt.close();
@@ -345,7 +329,6 @@ public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable 
         rs.close();
         selectStmt.close();
         
-        // Only show messages if mostrarMensajes is true
         if (mostrarMensajes) {
             JOptionPane.showMessageDialog(null, "Cantidad actualizada correctamente");
         }
@@ -355,21 +338,19 @@ public void actualizarCantidadEnBD(String nombre, int cantidad, int row, JTable 
         objetoConexion.cerrarConexion();
     }
 }
-// DIEGO14.03.25:
+
 private Connection obtenerConexion() throws Exception {
     Database objetoConexion = new Database();
     return objetoConexion.establecerConexion();
 }
 
-// Replace the example method with this implementation:
 public void actualizarCantidadDirecta(String nombre, int cantidad) {
     Database objetoConexion = new Database();
     
     try {
         Connection conn = objetoConexion.establecerConexion();
         
-        // First find the product in the pedido table
-        String selectSql = "SELECT id, unidad FROM pedido WHERE nombre = ?";
+        String selectSql = "SELECT id, unidad FROM prueba160225.pedido WHERE nombre = ?";
         PreparedStatement selectStmt = conn.prepareStatement(selectSql);
         selectStmt.setString(1, nombre);
         ResultSet rs = selectStmt.executeQuery();
@@ -379,15 +360,14 @@ public void actualizarCantidadDirecta(String nombre, int cantidad) {
             double unidad = rs.getDouble("unidad");
             double nuevoTotal = cantidad * unidad;
             
-            // Update quantity and total
-            String updateSql = "UPDATE pedido SET cantidad = ?, total = ? WHERE id = ?";
+            String updateSql = "UPDATE prueba160225.pedido SET cantidad = ?, total = ? WHERE id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
             updateStmt.setInt(1, cantidad);
-        updateStmt.setDouble(2, nuevoTotal);
+            updateStmt.setDouble(2, nuevoTotal);
             updateStmt.setInt(3, id);
         
             updateStmt.executeUpdate();
-updateStmt.close();
+            updateStmt.close();
         }
         
         rs.close();
@@ -398,4 +378,3 @@ updateStmt.close();
     }
 }
 }
-// DIEGO14.03.25:
