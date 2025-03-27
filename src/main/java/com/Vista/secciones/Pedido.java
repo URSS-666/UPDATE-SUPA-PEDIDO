@@ -989,7 +989,7 @@ public class Pedido extends javax.swing.JPanel {
         JTable tempTable = new JTable(tempModel);
         
         // Send the order with the properly structured table
-        objetoPedido.guardarPedido(tempTable);
+        objetoPedido.enviarPedido(tempTable);
         
         
     } catch (Exception e) {
